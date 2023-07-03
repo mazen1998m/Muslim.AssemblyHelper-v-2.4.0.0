@@ -71,7 +71,10 @@ public static class AssemblyHelper
     /// type is null
     /// </summary>
     /// <param name="type">The type whose assembly to retrieve.</param>
-    /// <returns>The assembly that contains the specified type or return the current assembly if type is null.</returns>
+    /// <returns>
+    /// The Assembly that contains the specified type or the Assembly of the currently executing code if the type is null.
+    /// If successful, the corresponding Assembly will be returned; otherwise, Assembly of the currently executing code.
+    /// </returns>
     /// <exception cref="SecurityException">Thrown when there is a security error.</exception>
     /// <exception cref="TypeLoadException">Thrown when a type cannot be loaded.</exception>
     /// <exception cref="ReflectionTypeLoadException">Thrown when there is an error loading types.</exception>
@@ -115,16 +118,18 @@ public static class AssemblyHelper
             ThrowError.InvalidOperationException(exception);
         }
 
-        return default!;
+        return GetAssembly();
 
     }
 
     /// <summary>
     /// Gets the assembly based on the provided assembly name or return the current assembly if
-    /// assemblyName is null
+    /// assemblyName is null or empty
     /// </summary>
     /// <param assemblyName="type">The assembly name whose assembly to retrieve.</param>
-    /// <returns>assembly based on the provided assembly name or return the current assembly if assemblyName is null</returns>
+    /// <returns>
+    /// The Assembly based on the provided assembly name or the Assembly of the currently executing code if the assembly name is null or empty.
+    /// If successful, the corresponding Assembly will be returned; otherwise, Assembly of the currently executing code.</returns>
     /// <exception cref="SecurityException">Thrown when there is a security error.</exception>
     /// <exception cref="PathTooLongException">Thrown when assembly name exceeds the maximum allowed path length</exception>
     /// <exception cref="ArgumentException">Thrown when assembly name contains invalid characters or is an invalid format.</exception>
@@ -174,7 +179,7 @@ public static class AssemblyHelper
             ThrowError.InvalidOperationException(exception);
         }
 
-        return default!;
+        return GetAssembly();
 
     }
 
@@ -183,8 +188,8 @@ public static class AssemblyHelper
     /// </summary>
     /// <param name="object">The object whose type's Assembly needs to be retrieved.</param>
     /// <returns>
-    /// The Assembly of the currently executing code if the object is null or the Assembly associated with the specified object's type.
-    /// If successful, the corresponding Assembly will be returned; otherwise, null.
+    /// The Assembly associated with the specified object's type or the Assembly of the currently executing code if the object is null.
+    /// If successful, the corresponding Assembly will be returned; otherwise, Assembly of the currently executing code.
     /// </returns>
     /// <exception cref="SecurityException">Thrown when there is a security violation.</exception>
     /// <exception cref="TypeLoadException">Thrown when the specified type cannot be loaded.</exception>
@@ -251,7 +256,6 @@ public static class AssemblyHelper
     }
 
     #endregion
-
 
     #region GetType
 
@@ -329,6 +333,7 @@ public static class AssemblyHelper
 
     #region Register In Cache method
 
+    //this method need try-catch
     private static string RegisterAssemblyNameInCache(Type type, Assembly assembly)
     {
         var assemblyName = assembly.GetName().Name;
