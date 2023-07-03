@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<PackageId>Muslim.AssemblyHelper</PackageId>
+		<Authors>mazen</Authors>
+		<Company>mazen</Company>
+		<Product>AssemblyHelper</Product>
+		<Title>Assembly Services Utility</Title>
+		<Description>A utility class that provides methods for working with assemblies, including retrieving assembly information, finding solution files, and getting types from assemblies.</Description>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<NeutralLanguage>en</NeutralLanguage>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageTags>Assembly,Helper</PackageTags>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<RepositoryType>github</RepositoryType>
+		<RepositoryUrl>https://github.com/mazen1998m/Muslim.AssemblyHelper.git</RepositoryUrl>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Include="..\README.md">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Build" Version="17.6.3" />
+	</ItemGroup>
+
+</Project>
+
