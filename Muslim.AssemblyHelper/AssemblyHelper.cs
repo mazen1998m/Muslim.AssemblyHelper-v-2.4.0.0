@@ -14,6 +14,7 @@ public static class AssemblyHelper
     private static readonly Dictionary<string, Assembly> AssemblyByNameCache = new();
     private static readonly Dictionary<Type, Assembly> AssemblyByTypeCache = new();
 
+    private static IEnumerable<Assembly>? _allAssemblies;
 
     #endregion
 
@@ -144,7 +145,7 @@ public static class AssemblyHelper
         try
         {
             var assembly = AssemblyByTypeCache.FirstOrDefault(x => x.Value.GetName().Name == assemblyName).Value;
-            if (assembly != null) return assembly;
+            if (assembly! != default) return assembly;
             return AssemblyByNameCache.ContainsKey(assemblyName)
                 ? AssemblyByNameCache[assemblyName]
                 : RegisterAssemblyNameInCache(assemblyName);
@@ -206,8 +207,69 @@ public static class AssemblyHelper
     #region Get Assembly Name
 
 
-    public static string GetAssemblyName() => GetAssembly().GetName().Name!;
-    public static string GetAssemblyName(Assembly? assembly) => assembly is not null ? assembly.GetName().Name! : GetAssemblyName();
+    public static string GetAssemblyName()
+    {
+
+        try
+        {
+            return GetAssembly().GetName().Name!;
+        }
+        catch (SecurityException exception)
+        {
+            ThrowError.SecurityException(exception);
+        }
+
+        catch (FileNotFoundException exception)
+        {
+            ThrowError.FileNotFoundException(exception);
+        }
+        catch (FileLoadException exception)
+        {
+            ThrowError.FileLoadException(exception);
+        }
+        catch (BadImageFormatException exception)
+        {
+            ThrowError.BadImageFormatException(exception);
+        }
+        catch (ReflectionTypeLoadException)
+        {
+            ThrowError.ReflectionTypeLoadException();
+        }
+
+
+        return default!;
+    }
+    public static string GetAssemblyName(Assembly? assembly)
+    {
+        try
+        {
+            return assembly is not null ? assembly.GetName().Name! : GetAssemblyName();
+        }
+        catch (SecurityException exception)
+        {
+            ThrowError.SecurityException(exception);
+        }
+
+        catch (FileNotFoundException exception)
+        {
+            ThrowError.FileNotFoundException(exception);
+        }
+        catch (FileLoadException exception)
+        {
+            ThrowError.FileLoadException(exception);
+        }
+        catch (BadImageFormatException exception)
+        {
+            ThrowError.BadImageFormatException(exception);
+        }
+        catch (ReflectionTypeLoadException)
+        {
+            ThrowError.ReflectionTypeLoadException();
+        }
+
+
+        return default!;
+    }
     public static string GetAssemblyName(Type? type)
     {
         if (type is null) return GetAssemblyName();
@@ -217,43 +279,156 @@ public static class AssemblyHelper
                 ? AssemblyNameByTypeCache[type]
                 : RegisterAssemblyNameInCache(type, GetAssembly(type));
         }
-        catch (Exception)
+        catch (SecurityException exception)
         {
-            throw;
+            ThrowError.SecurityException(exception);
+        }
+
+        catch (FileNotFoundException exception)
+        {
+            ThrowError.FileNotFoundException(exception);
+        }
+        catch (FileLoadException exception)
+        {
+            ThrowError.FileLoadException(exception);
+        }
+        catch (BadImageFormatException exception)
+        {
+            ThrowError.BadImageFormatException(exception);
+        }
+        catch (ReflectionTypeLoadException)
+        {
+            ThrowError.ReflectionTypeLoadException();
         }
 
         return GetAssemblyName();
     }
     public static List<string> GetAssemblysName()
-        => GetAllAssembly().Select(assembly => assembly.GetName().Name!).ToList();
+    {
+        try
+        {
+            return GetAllAssembly().Select(assembly => assembly.GetName().Name!).ToList();
+        }
+        catch (SecurityException exception)
+        {
+            ThrowError.SecurityException(exception);
+        }
+
+        catch (FileNotFoundException exception)
+        {
+            ThrowError.FileNotFoundException(exception);
+        }
+        catch (FileLoadException exception)
+        {
+            ThrowError.FileLoadException(exception);
+        }
+        catch (BadImageFormatException exception)
+        {
+            ThrowError.BadImageFormatException(exception);
+        }
+        catch (ReflectionTypeLoadException)
+        {
+            ThrowError.ReflectionTypeLoadException();
+        }
+
+        catch (TypeLoadException exception)
+        {
+            ThrowError.TypeLoadException(exception);
+        }
+        catch (MethodAccessException exception)
+        {
+            ThrowError.MethodAccessException(exception);
+        }
+        catch (InvalidOperationException exception)
+        {
+            ThrowError.InvalidOperationException(exception);
+        }
+
+
+
+        return default!;
+
+
+    }
     public static string GetAssemblyName(object? @object) => @object is not null ? GetAssemblyName(@object.GetType()) : GetAssemblyName();
 
     #endregion
 
     #region Get Assembly Name Length
 
-    public static int GetAssemblyNameLength(string assemblyName) => assemblyName.Split(".").Length;
-
-    public static int GetAssemblyNameLength(Type assemblyType) => GetAssemblyName(assemblyType).Split(".").Length;
+    public static int GetAssemblyNameLength(string assemblyName) => assemblyName.Length;
+    public static int GetAssemblyNameLength(Type assemblyType) => GetAssemblyName(assemblyType).Length;
+    public static int GetAssemblyNameLength(object @object) => GetAssemblyName(@object).Length;
+    public static int GetAssemblyNameLength(Assembly assembly) => GetAssemblyName(assembly).Length;
 
     #endregion
 
     #region GetAllAssembly
-    public static List<Assembly> GetAllAssembly()
+    public static IEnumerable<Assembly> GetAllAssembly()
     {
+        if (_allAssemblies != null && _allAssemblies.Any()) return _allAssemblies;
 
-        var projectName = System.Reflection.Assembly.GetExecutingAssembly().FullName!.Split(".").First();
 
         var solutionFiles = SolutionFile
-            .Parse(FindSolutionFile()).ProjectsInOrder
-            .Select(x => x.ProjectName)
-            .Where(project => project.StartsWith(projectName))
-            .ToList();
+            .Parse(FindSolutionFile()).ProjectsInOrder.Select(x => x.ProjectName).ToList();
 
-        var solutionAssemblys = solutionFiles.Select(GetAssembly).ToList();
-        return solutionAssemblys;
+        _allAssemblies = solutionFiles.Select(GetAssembly).ToList();
+        return _allAssemblies;
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     #endregion
 
@@ -357,18 +532,11 @@ public static class AssemblyHelper
 
     #endregion
 
-    #region other
-    //this must move to other library
-    //public static List<Type> GetConstructors() => (from type in GetTypes().Where(t => t.FullName!.StartsWith(GetAssemblyName(t)))
-    //                                               from constructor in type.GetConstructors()
-    //                                               from parameter in constructor.GetParameters()
-    //                                               select parameter.ParameterType).ToList();
 
-    #endregion
 
 }
 
-internal static class ThrowError
+public static class ThrowError
 {
 
     public static void SecurityException(Exception e) => throw new SecurityException(ErrorMessage.SecurityException, e);
@@ -390,6 +558,7 @@ internal static class ThrowError
     public static void ArgumentException(Exception e) => throw new PathTooLongException(ErrorMessage.ArgumentException, e);
 
     public static void InvalidOperationException(Exception e) => throw new PathTooLongException(ErrorMessage.InvalidOperationException, e);
+    public static void MethodAccessException(Exception e) => throw new MethodAccessException(ErrorMessage.MethodAccessException, e);
 
     public static void ReflectionTypeLoadException()
         => throw new ReflectionTypeLoadException
@@ -410,6 +579,7 @@ internal static class ErrorMessage
     public const string FileLoadException = "assembly is found but cannot be loaded due to an error in the file format or a mismatch in the processor architecture.";
     public const string ArgumentException = "This exception can be thrown if assembly name contains invalid characters or is an invalid format.";
     public const string InvalidOperationException = "This exception can be thrown if the assembly has already been loaded into the current application and cannot be loaded again.";
+    public const string MethodAccessException = $"An error occurred: {nameof(MethodAccessException)}. Please check the accessibility of the method.";
     public const string UnexpectedException = "An unexpected error occurred.";
 }
 

@@ -20,18 +20,20 @@ type (optional): The type whose assembly to retrieve.
 
 #### Return Value
 
-The method returns the assembly that contains the specified type or the assembly representing the currently executing code.
+The method returns the Assembly that contains the specified type or the Assembly of the currently executing code if the type is null.
+If there are any of the exceptions listed in the Exceptions section, they will be returned Assembly of the currently executing code
 
 #### Exceptions
 
 The method may throw the following exceptions:
 
-- SecurityException: Thrown when there is a security error.
-- TypeLoadException: Thrown when a type cannot be loaded.
-- ReflectionTypeLoadException: Thrown when there is an error loading types.
-- FileNotFoundException: Thrown when the assembly file is not found.
-- BadImageFormatException : Thrown when assembly is not a valid assembly or assembly is targeted for a different version of the runtime.
-- FileLoadException : Thrown when the assembly is found but cannot be loaded due to an error in the file format or a mismatch in the processor architecture.
+- SecurityException
+- TypeLoadException
+- ReflectionTypeLoadException
+- FileNotFoundException
+- FileLoadException
+- BadImageFormatException
+- InvalidOperationException
 
 #### Examples
 
@@ -63,10 +65,7 @@ try
     Assembly assembly = GetAssembly(nullType);
     // Process the assembly
 }
-catch (NullReferenceException)
-{
-    // Handle null reference exception
-}
+
 catch (SecurityException)
 {
     // Handle security exception
@@ -81,11 +80,11 @@ catch (ReflectionTypeLoadException)
     // Handle reflection type load exception
 }
 
+//and more...
+
 ```
 
 In this example, we demonstrate how to handle the exceptions that may be thrown by the GetAssembly method. We create a try-catch block and catch each specific exception type individually. You can replace the comment placeholders with your own exception handling code.
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ### GetAssembly(string assemblyName) Method
 
@@ -109,13 +108,13 @@ Assembly: The retrieved assembly based on the provided assembly name. If no asse
 
 The GetAssembly method may throw the following exceptions:
 
-- SecurityException: Thrown when there is a security violation during the assembly load process.
-- PathTooLongException: Thrown when the specified assembly name exceeds the maximum supported path length.
-- FileNotFoundException: Thrown when the specified assembly file is not found.
-- FileLoadException: Thrown when an error occurs while loading the assembly file.
-- BadImageFormatException: Thrown when the assembly file format is invalid or unsupported.
-- ArgumentException: Thrown when the provided assembly name is invalid or empty.
-- InvalidOperationException: Thrown when an invalid operation occurs during the assembly load process.
+- SecurityException
+- PathTooLongException
+- FileNotFoundException
+- FileLoadException
+- BadImageFormatException
+- ArgumentException
+- InvalidOperationException
 
 #### Examples
 
@@ -130,8 +129,6 @@ In this example, the GetAssembly method is called with a null value for the asse
 This means that no specific assembly name is provided, and the method will return the executing assembly.
 The retrieved assembly is then assigned to the assembly variable for further processing.
 
-This example is useful when you need to work with the currently executing assembly without explicitly specifying its name.
-
 ##### Example 2:
 
 ```csharp
@@ -141,7 +138,7 @@ var assembly = GetAssembly("MyAssembly");
 
 In this example, the GetAssembly method is called with the assembly name "MyAssembly" as the assemblyName parameter. The method attempts to retrieve the assembly with the specified name. If the assembly is found, it is assigned to the assembly variable for further processing.
 
-If the assembly is not found or if any exception occurs, the method will assign the executing assembly to the assembly variable by default. Alternatively, you can handle the exception accordingly.
+If any exception occurs, the method will assign the executing assembly to the assembly variable by default. Alternatively, you can handle the exception accordingly.
 
 This example is useful when you are aware of the name of the assembly you want to retrieve and need to work with it specifically.
 
@@ -195,7 +192,166 @@ catch (InvalidOperationException ex)
 ```
 
 In this example, the GetAssembly method is called with the assembly name "MyAssembly". If any exceptions occur during the execution of the method, they are caught in separate catch blocks based on the type of exception. You can customize the exception handling code within each catch block to suit your specific requirements.
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+### GetAssembly Method
+
+This method retrieves the Assembly instance of the code that calls it. It is used to get the Assembly object representing the currently executing code. If the retrieval is successful, the method returns the Assembly object. However, if any exceptions occur during the process, the method will call corresponding custom error methods and return a null reference.
+
+#### Method Signature
+
+```csharp
+public static Assembly GetAssembly()
+```
+
+#### Parameters
+This method does not take any parameters.
+
+#### Return Value
+
+Assembly: The Assembly of the currently executing code if successful.
+null: If any exceptions occur during the process.
+
+#### Exceptions
+FileNotFoundException
+BadImageFormatException
+SecurityException
+FileLoadException
+Exception
+
+#### Examples
+
+##### Example 1:
+
+```csharp
+// Example code demonstrating the usage of GetAssembly method
+Assembly assembly = GetAssembly();
+if (assembly != null)
+{
+    // Perform actions with the assembly
+}
+```
+In this example, the GetAssembly method is called to obtain the Assembly object representing the currently executing code. If the retrieval is successful and the assembly object is not null, you can proceed to perform actions using the assembly object.
+
+##### Example 2:
+
+```csharp
+// Example code demonstrating exception handling with GetAssembly method
+try
+{
+    Assembly assembly = GetAssembly();
+    if (assembly != null)
+    {
+        // Perform actions with the assembly
+    }
+}
+catch (FileNotFoundException ex)
+{
+    // Handle FileNotFoundException
+}
+catch (BadImageFormatException ex)
+{
+    // Handle BadImageFormatException
+}
+catch (SecurityException ex)
+{
+    // Handle SecurityException
+}
+catch (FileLoadException ex)
+{
+    // Handle FileLoadException
+}
+catch (Exception ex)
+{
+    // Handle other unexpected exceptions
+}
+
+```
+This example demonstrates exception handling with the GetAssembly method. The method is called within a try-catch block to catch specific exceptions that may occur during the retrieval of the assembly object. You can handle each exception type separately and implement the necessary error-handling logic for each case.
+
+### GetAssembly Method
+
+#### Method Signature
+
+```csharp
+public static Assembly GetAssembly(object? @object)
+```
+
+#### Parameters
+@object (optional): The object whose type's Assembly needs to be retrieved.
+#### Return Value
+
+#### Exceptions
+
+#### Examples
+
+##### Example 1:
+
+```csharp
+// Create an object of a specific type
+MyClass myObject = new MyClass();
+
+// Retrieve the Assembly object associated with the object's type
+Assembly objectAssembly = GetAssembly(myObject);
+if (objectAssembly != null)
+{
+    // Perform actions with the object's type assembly
+    // ...
+}
+```
+In this example, the GetAssembly method is called with an object parameter to retrieve the Assembly object associated with the specified object's type. If the retrieval is successful and the objectAssembly object is not null, you can proceed to perform actions using the assembly object.
+
+##### Example 2:
+
+```csharp
+try
+{
+    // Retrieve the Assembly object for the currently executing code or the Assembly associated with the specified object's type
+    Assembly assembly = GetAssembly(myObject);
+    if (assembly != null)
+    {
+        // Perform actions with the assembly
+        // ...
+    }
+}
+catch (SecurityException ex)
+{
+    // Handle SecurityException: security violation occurred
+    // ...
+}
+catch (TypeLoadException ex)
+{
+    // Handle TypeLoadException: specified type cannot be loaded
+    // ...
+}
+catch (ReflectionTypeLoadException ex)
+{
+    // Handle ReflectionTypeLoadException: error loading types from an assembly
+    // ...
+}
+catch (FileNotFoundException ex)
+{
+    // Handle FileNotFoundException: assembly file not found
+    // ...
+}
+catch (FileLoadException ex)
+{
+    // Handle FileLoadException: assembly cannot be loaded
+    // ...
+}
+catch (BadImageFormatException ex)
+{
+    // Handle BadImageFormatException: assembly is not a valid image format
+    // ...
+}
+catch (InvalidOperationException ex)
+{
+    // Handle InvalidOperationException: invalid operation
+    // ...
+}
+
+```
+
+
 
 ### GetAssemblyName Method
 
