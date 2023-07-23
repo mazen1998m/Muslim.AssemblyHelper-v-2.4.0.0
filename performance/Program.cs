@@ -30,6 +30,5 @@ Console.WriteLine("Elapsed Time 2 : " + stopwatch2.Elapsed);
 
 
 
-var VARIABLE = AssemblyHelper.GetAllAssembly().ToList();
 
 var x = 3;
