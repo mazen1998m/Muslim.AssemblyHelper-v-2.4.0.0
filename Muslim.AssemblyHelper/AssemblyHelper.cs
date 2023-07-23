@@ -1,5 +1,7 @@
 ﻿using Microsoft.Build.Construction;
+using Muslim.AssemblyHelper;
 using System.Security;
+
 // ReSharper disable once CheckNamespace
 namespace Muslim.Assembly.Helper;
 
@@ -10,14 +12,13 @@ public static class AssemblyHelper
     #region Cache
 
     private static readonly Dictionary<Type, string> AssemblyNameByTypeCache = new();
-
     private static readonly Dictionary<string, Assembly> AssemblyByNameCache = new();
     private static readonly Dictionary<Type, Assembly> AssemblyByTypeCache = new();
-
     private static IEnumerable<Assembly>? _allAssemblies;
 
     #endregion
 
+    //done readme
     #region Get Assembly
 
     /// <summary>
@@ -201,12 +202,20 @@ public static class AssemblyHelper
     /// <exception cref="InvalidOperationException">Thrown when the operation is invalid.</exception>
     public static Assembly GetAssembly(object? @object) => @object is not null ? GetAssembly(@object.GetType()) : GetAssembly();
 
-
     #endregion
 
     #region Get Assembly Name
 
 
+    /// <summary>
+    /// Gets the name of the assembly from the loaded assembly.
+    /// </summary>
+    /// <returns>The name of the loaded assembly.</returns>
+    /// <exception cref="SecurityException">Thrown when a security error occurs while accessing the assembly.</exception>
+    /// <exception cref="FileNotFoundException">Thrown when the assembly file is not found.</exception>
+    /// <exception cref="FileLoadException">Thrown when an error occurs while loading the assembly file.</exception>
+    /// <exception cref="BadImageFormatException">Thrown when the assembly file has an invalid format.</exception>
+    /// <exception cref="ReflectionTypeLoadException">Thrown when an error occurs while loading types in the assembly.</exception>
     public static string GetAssemblyName()
     {
 
@@ -239,6 +248,17 @@ public static class AssemblyHelper
 
         return default!;
     }
+
+    /// <summary>
+    /// Gets the name of the assembly from the provided loaded assembly. If no assembly is provided, it will retrieve the name of the currently executing assembly.
+    /// </summary>
+    /// <param name="assembly">The loaded assembly from which to retrieve the name.</param>
+    /// <returns>The name of the provided assembly or the currently executing assembly.</returns>
+    /// <exception cref="SecurityException">Thrown when a security error occurs while accessing the assembly.</exception>
+    /// <exception cref="FileNotFoundException">Thrown when the assembly file is not found.</exception>
+    /// <exception cref="FileLoadException">Thrown when an error occurs while loading the assembly file.</exception>
+    /// <exception cref="BadImageFormatException">Thrown when the assembly file has an invalid format.</exception>
+    /// <exception cref="ReflectionTypeLoadException">Thrown when an error occurs while loading types in the assembly.</exception>
     public static string GetAssemblyName(Assembly? assembly)
     {
         try
@@ -270,6 +290,17 @@ public static class AssemblyHelper
 
         return default!;
     }
+
+    /// <summary>
+    /// Gets the name of the assembly from the provided type's assembly. If no type is provided, it will retrieve the name of the currently executing assembly.
+    /// </summary>
+    /// <param name="type">The type whose assembly name should be retrieved.</param>
+    /// <returns>The name of the assembly associated with the provided type or the currently executing assembly.</returns>
+    /// <exception cref="SecurityException">Thrown when a security error occurs while accessing the assembly.</exception>
+    /// <exception cref="FileNotFoundException">Thrown when the assembly file is not found.</exception>
+    /// <exception cref="FileLoadException">Thrown when an error occurs while loading the assembly file.</exception>
+    /// <exception cref="BadImageFormatException">Thrown when the assembly file has an invalid format.</exception>
+    /// <exception cref="ReflectionTypeLoadException">Thrown when an error occurs while loading types in the assembly.</exception>
     public static string GetAssemblyName(Type? type)
     {
         if (type is null) return GetAssemblyName();
@@ -303,11 +334,24 @@ public static class AssemblyHelper
 
         return GetAssemblyName();
     }
-    public static List<string> GetAssemblysName()
+
+    /// <summary>
+    /// Gets the names of all loaded assemblies.
+    /// </summary>
+    /// <returns>An enumerable collection of assembly names.</returns>
+    /// <exception cref="SecurityException">Thrown when a security error occurs while accessing the assemblies.</exception>
+    /// <exception cref="FileNotFoundException">Thrown when an assembly file is not found.</exception>
+    /// <exception cref="FileLoadException">Thrown when an error occurs while loading an assembly file.</exception>
+    /// <exception cref="BadImageFormatException">Thrown when an assembly file has an invalid format.</exception>
+    /// <exception cref="ReflectionTypeLoadException">Thrown when an error occurs while loading types in an assembly.</exception>
+    /// <exception cref="TypeLoadException">Thrown when a class cannot be loaded due to a type mismatch.</exception>
+    /// <exception cref="MethodAccessException">Thrown when an attempt to access a method fails.</exception>
+    /// <exception cref="InvalidOperationException">Thrown when an invalid operation occurs during the process.</exception>
+    public static IEnumerable<string> GetAssembliesName()
     {
         try
         {
-            return GetAllAssembly().Select(assembly => assembly.GetName().Name!).ToList();
+            return GetAllAssemblies().Select(assembly => assembly.GetName().Name!);
         }
         catch (SecurityException exception)
         {
@@ -350,101 +394,136 @@ public static class AssemblyHelper
 
 
     }
+
+    /// <summary>
+    /// Gets the name of the assembly associated with the provided object's type. If no object is provided or the object is null, it will retrieve the name of the currently executing assembly.
+    /// </summary>
+    /// <param name="object">The object whose type's assembly name should be retrieved.</param>
+    /// <returns>The name of the assembly associated with the provided object's type or the currently executing assembly.</returns>
+    /// <exception cref="SecurityException">Thrown when a security error occurs while accessing the assembly.</exception>
+    /// <exception cref="FileNotFoundException">Thrown when the assembly file is not found.</exception>
+    /// <exception cref="FileLoadException">Thrown when an error occurs while loading the assembly file.</exception>
+    /// <exception cref="BadImageFormatException">Thrown when the assembly file has an invalid format.</exception>
+    /// <exception cref="ReflectionTypeLoadException">Thrown when an error occurs while loading types in the assembly.</exception>
     public static string GetAssemblyName(object? @object) => @object is not null ? GetAssemblyName(@object.GetType()) : GetAssemblyName();
 
     #endregion
 
     #region Get Assembly Name Length
 
+    /// <summary>
+    /// Gets the length of the provided assembly name.
+    /// </summary>
+    /// <param name="assemblyName">The name of the assembly.</param>
+    /// <returns>The length of the assembly name.</returns>
     public static int GetAssemblyNameLength(string assemblyName) => assemblyName.Length;
+
+    /// <summary>
+    /// Gets the length of the assembly name associated with the provided assembly type.
+    /// </summary>
+    /// <param name="assemblyType">The type whose assembly name's length should be retrieved.</param>
+    /// <returns>The length of the assembly name associated with the provided assembly type.</returns>
+    /// <remarks>
+    /// The method will retrieve the assembly name based on the type of the provided assembly type.
+    /// </remarks>
+    /// <seealso cref="GetAssemblyName(Type)"/>
     public static int GetAssemblyNameLength(Type assemblyType) => GetAssemblyName(assemblyType).Length;
+
+    /// <summary>
+    /// Gets the length of the assembly name associated with the provided object's type.
+    /// </summary>
+    /// <param name="object">The object whose type's assembly name's length should be retrieved.</param>
+    /// <returns>The length of the assembly name associated with the provided object's type.</returns>
+    /// <remarks>
+    /// If the provided object is not null, the method will return the assembly name length based on the type of the object.
+    /// If the provided object is null or no object is provided, the method will retrieve the assembly name length of the currently executing assembly.
+    /// </remarks>
+    /// <seealso cref="GetAssemblyName(object)"/>
     public static int GetAssemblyNameLength(object @object) => GetAssemblyName(@object).Length;
+
+    /// <summary>
+    /// Gets the length of the assembly name associated with the provided assembly.
+    /// </summary>
+    /// <param name="assembly">The assembly whose name's length should be retrieved.</param>
+    /// <returns>The length of the assembly name associated with the provided assembly.</returns>
+    /// <seealso cref="GetAssemblyName(Assembly)"/>
     public static int GetAssemblyNameLength(Assembly assembly) => GetAssemblyName(assembly).Length;
 
     #endregion
 
-    #region GetAllAssembly
-    public static IEnumerable<Assembly> GetAllAssembly()
+    #region GetAllAssemblies
+
+    /// <summary>
+    /// Gets all the assemblies loaded in the current application domain or related to projects in the solution.
+    /// </summary>
+    /// <returns>An enumerable collection of assemblies.</returns>
+    /// <remarks>
+    /// This method attempts to retrieve assemblies from the current application domain and also from projects in the solution.
+    /// If the assemblies have already been fetched and cached in the static variable, it will return the cached list.
+    /// If not, it will attempt to find the solution file, parse its projects in order, and retrieve assemblies from each project.
+    /// </remarks>
+    /// <exception cref="FileNotFoundException">Thrown when the solution file or an assembly file is not found.</exception>
+    /// <exception cref="InvalidOperationException">Thrown when an invalid operation occurs during the process.</exception>
+    /// <exception cref="ReflectionTypeLoadException">Thrown when an error occurs while loading types in an assembly.</exception>
+    /// <exception cref="Exception">Thrown for unexpected exceptions that occur during the process.</exception>
+    public static IEnumerable<Assembly> GetAllAssemblies()
     {
-        if (_allAssemblies != null && _allAssemblies.Any()) return _allAssemblies;
+        try
+        {
+            if (_allAssemblies != null && _allAssemblies.Any()) return _allAssemblies;
 
+            var solutionFiles = SolutionFile
+                .Parse(FindSolutionFile())
+                .ProjectsInOrder
+                .Select(x => x.ProjectName).ToList();
 
-        var solutionFiles = SolutionFile
-            .Parse(FindSolutionFile()).ProjectsInOrder.Select(x => x.ProjectName).ToList();
+            _allAssemblies = solutionFiles.Select(GetAssembly);
+        }
 
-        _allAssemblies = solutionFiles.Select(GetAssembly).ToList();
-        return _allAssemblies;
-
+        catch (FileNotFoundException ex)
+        {
+            ThrowError.FileNotFoundException(ex);
+        }
+        catch (InvalidOperationException ex)
+        {
+            ThrowError.InvalidOperationException(ex);
+        }
+        catch (ReflectionTypeLoadException ex)
+        {
+            ThrowError.ReflectionTypeLoadException();
+        }
+        catch (Exception ex)
+        {
+            ThrowError.UnexpectedExceptions(ex);
+        }
+        return _allAssemblies!;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     #endregion
 
     #region GetType
 
-    public static IEnumerable<Type> GeTypeByName(Assembly assembly, string typeName) => assembly.GetTypes().Where(v => v.FullName!.Contains(typeName));
+    /// <summary>
+    /// Gets the types from the provided assembly that have names containing the specified type name.
+    /// </summary>
+    /// <param name="assembly">The assembly to search for types.</param>
+    /// <param name="typeName">The name to match against the types.</param>
+    /// <returns>An enumerable collection of types whose names contain the specified type name.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when the provided assembly is null.</exception>
+    public static IEnumerable<Type> GeTypesByName(Assembly assembly, string typeName)
+        => assembly.GetTypes().Where(v => v.FullName!.Contains(typeName));
 
-    public static IEnumerable<Type> GeTypeByName(string typeName)
+    /// <summary>
+    /// Gets the types from all loaded assemblies that have names containing the specified type name.
+    /// </summary>
+    /// <param name="typeName">The name to match against the types.</param>
+    /// <returns>An enumerable collection of types whose names contain the specified type name.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when the provided type name is null.</exception>
+    public static IEnumerable<Type> GetTypesByName(string typeName)
     {
         List<Type> allTypes = new();
-        var allAssembly = GetAllAssembly();
-        foreach (
-            IEnumerable<Type>? types in allAssembly
-                .Select(assembly => assembly
-                    .GetTypes()
-                    .Where(v => v.FullName!.Contains(typeName))))
+        var allAssembly = GetAllAssemblies();
+        foreach (var types in allAssembly.Select(assembly => assembly.GetTypes().Where(v => v.FullName!.Contains(typeName))))
         {
             allTypes.AddRange(types);
         }
@@ -452,10 +531,14 @@ public static class AssemblyHelper
         return allTypes;
     }
 
+    /// <summary>
+    /// Gets all types from all assemblies.
+    /// </summary>
+    /// <returns>An enumerable collection of all types from all assemblies.</returns>
     public static IEnumerable<Type> GetTypes()
     {
         List<Type> allTypes = new();
-        var allAssembly = GetAllAssembly();
+        var allAssembly = GetAllAssemblies();
         foreach (Type[]? types in allAssembly.Select(assembly => assembly.GetTypes()))
         {
             allTypes.AddRange(types);
@@ -464,18 +547,23 @@ public static class AssemblyHelper
         return allTypes;
     }
 
+    /// <summary>
+    /// Gets the first type from all  assemblies with the specified type name.
+    /// </summary>
+    /// <param name="typeName">The name of the type to retrieve.</param>
+    /// <returns>The type with the specified name, or null if not found.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when the provided type name is null.</exception>
     public static Type GetType(string typeName)
     {
         Type? type = null;
-        foreach (Type? assemblyType
-                 in GetAllAssembly().Select(assembly => assembly.GetType(typeName))
-                     .Where(assemblyType => assemblyType != null))
+        foreach (var assemblyType in GetAllAssemblies().Select(assembly => assembly.GetType(typeName)).Where(assemblyType => assemblyType != null))
         {
             type = assemblyType;
         }
 
         return type!;
     }
+
 
 
     #endregion
@@ -535,53 +623,3 @@ public static class AssemblyHelper
 
 
 }
-
-public static class ThrowError
-{
-
-    public static void SecurityException(Exception e) => throw new SecurityException(ErrorMessage.SecurityException, e);
-
-    public static void UnexpectedExceptions(Exception e) => throw new Exception(ErrorMessage.UnexpectedException, e);
-
-    public static void InvalidCastException(Exception e) => throw new InvalidCastException(ErrorMessage.InvalidCastException, e);
-
-    public static void TypeLoadException(Exception e) => throw new TypeLoadException(ErrorMessage.TypeLoadException, e);
-
-    public static void FileNotFoundException(Exception e) => throw new FileNotFoundException(ErrorMessage.FileNotFoundException, e);
-
-    public static void BadImageFormatException(Exception e) => throw new FileNotFoundException(ErrorMessage.BadImageFormatException, e);
-
-    public static void FileLoadException(Exception e) => throw new FileLoadException(ErrorMessage.FileLoadException, e);
-
-    public static void PathTooLongException(Exception e) => throw new PathTooLongException(ErrorMessage.PathTooLongException, e);
-
-    public static void ArgumentException(Exception e) => throw new PathTooLongException(ErrorMessage.ArgumentException, e);
-
-    public static void InvalidOperationException(Exception e) => throw new PathTooLongException(ErrorMessage.InvalidOperationException, e);
-    public static void MethodAccessException(Exception e) => throw new MethodAccessException(ErrorMessage.MethodAccessException, e);
-
-    public static void ReflectionTypeLoadException()
-        => throw new ReflectionTypeLoadException
-            (Type.EmptyTypes, Array.Empty<Exception>(), ErrorMessage.ReflectionTypeLoadException);
-
-}
-
-internal static class ErrorMessage
-{
-    public const string NullReferenceException = "The type '{0}' is null.";
-    public const string SecurityException = "Insufficient permissions to access the assembly.";
-    public const string InvalidCastException = "Invalid type cast.";
-    public const string TypeLoadException = "Unable to load the specified type.";
-    public const string FileNotFoundException = "The file was not found.";
-    public const string ReflectionTypeLoadException = "Unable to load one or more types.";
-    public const string BadImageFormatException = "assembly is not a valid assembly or assembly is targeted for a different version of the runtime.";
-    public const string PathTooLongException = "the specified assembly name exceeds the maximum allowed path length.";
-    public const string FileLoadException = "assembly is found but cannot be loaded due to an error in the file format or a mismatch in the processor architecture.";
-    public const string ArgumentException = "This exception can be thrown if assembly name contains invalid characters or is an invalid format.";
-    public const string InvalidOperationException = "This exception can be thrown if the assembly has already been loaded into the current application and cannot be loaded again.";
-    public const string MethodAccessException = $"An error occurred: {nameof(MethodAccessException)}. Please check the accessibility of the method.";
-    public const string UnexpectedException = "An unexpected error occurred.";
-}
-
-
-

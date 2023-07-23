@@ -14,7 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ClassLibrary1\ClassLibrary1.csproj" />
     <ProjectReference Include="..\Muslim.AssemblyHelper\Muslim.AssemblyHelper.csproj" />
   </ItemGroup>
 
