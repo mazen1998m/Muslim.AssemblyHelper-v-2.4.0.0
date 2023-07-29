@@ -17,7 +17,12 @@
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<RepositoryType>github</RepositoryType>
 		<RepositoryUrl>https://github.com/mazen1998m/Muslim.AssemblyHelper.git</RepositoryUrl>
+		<ApplicationIcon>AssemblyHelper-logo.ico</ApplicationIcon>
 	</PropertyGroup>
+
+	<ItemGroup>
+	  <Content Include="AssemblyHelper-logo.ico" />
+	</ItemGroup>
 
 	<ItemGroup>
 	  <None Include="..\README.md">

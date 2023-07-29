@@ -18,7 +18,6 @@ public static class AssemblyHelper
 
     #endregion
 
-    //done readme
     #region Get Assembly
 
     /// <summary>
@@ -249,6 +248,7 @@ public static class AssemblyHelper
         return default!;
     }
 
+
     /// <summary>
     /// Gets the name of the assembly from the provided loaded assembly. If no assembly is provided, it will retrieve the name of the currently executing assembly.
     /// </summary>
@@ -335,6 +335,7 @@ public static class AssemblyHelper
         return GetAssemblyName();
     }
 
+
     /// <summary>
     /// Gets the names of all loaded assemblies.
     /// </summary>
@@ -411,12 +412,14 @@ public static class AssemblyHelper
 
     #region Get Assembly Name Length
 
+
     /// <summary>
     /// Gets the length of the provided assembly name.
     /// </summary>
     /// <param name="assemblyName">The name of the assembly.</param>
     /// <returns>The length of the assembly name.</returns>
     public static int GetAssemblyNameLength(string assemblyName) => assemblyName.Length;
+
 
     /// <summary>
     /// Gets the length of the assembly name associated with the provided assembly type.
@@ -428,6 +431,7 @@ public static class AssemblyHelper
     /// </remarks>
     /// <seealso cref="GetAssemblyName(Type)"/>
     public static int GetAssemblyNameLength(Type assemblyType) => GetAssemblyName(assemblyType).Length;
+
 
     /// <summary>
     /// Gets the length of the assembly name associated with the provided object's type.
@@ -502,6 +506,7 @@ public static class AssemblyHelper
     #endregion
 
     #region GetType
+
 
     /// <summary>
     /// Gets the types from the provided assembly that have names containing the specified type name.

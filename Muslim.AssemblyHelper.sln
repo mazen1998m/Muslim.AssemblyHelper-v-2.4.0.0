@@ -5,8 +5,6 @@ VisualStudioVersion = 17.6.33723.286
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Muslim.AssemblyHelper", "Muslim.AssemblyHelper\Muslim.AssemblyHelper.csproj", "{E5B9117C-A329-467F-9CF3-142079C85753}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "performance", "performance\performance.csproj", "{83856DB1-F92B-45D9-BF8D-E0C8FCB0380B}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,10 +15,6 @@ Global
 		{E5B9117C-A329-467F-9CF3-142079C85753}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E5B9117C-A329-467F-9CF3-142079C85753}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E5B9117C-A329-467F-9CF3-142079C85753}.Release|Any CPU.Build.0 = Release|Any CPU
-		{83856DB1-F92B-45D9-BF8D-E0C8FCB0380B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{83856DB1-F92B-45D9-BF8D-E0C8FCB0380B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{83856DB1-F92B-45D9-BF8D-E0C8FCB0380B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{83856DB1-F92B-45D9-BF8D-E0C8FCB0380B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

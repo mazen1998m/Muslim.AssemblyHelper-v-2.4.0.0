@@ -594,275 +594,629 @@ This example demonstrates exception handling with the GetAssemblyName method. Th
 
 Note: In the examples, make sure to replace the Console.WriteLine() statements with appropriate error handling or application logic based on your use case.
 
-### GetAssemblyNameLength(string assemblyName) Method
+### GetAssemblyName(object? @object) Method
+
+#### Description
+
+This method retrieves the name of the assembly associated with the provided object's type. If no object is provided or the object is null, it will retrieve the name of the currently executing assembly.
 
 #### Method Signature
 
 ```csharp
- public static int GetAssemblyNameLength(string assemblyName)
+public static string GetAssemblyName(object? @object)
+
+
 ```
 
 #### Parameters
 
+object: The object whose type's assembly name should be retrieved.
+
 #### Return Value
 
+A string representing the name of the assembly associated with the provided object's type or the currently executing assembly.
+
 #### Exceptions
+
+This method may throw the following exceptions:
+
+- SecurityException
+- FileNotFoundException
+- FileLoadException
+- BadImageFormatException
+- ReflectionTypeLoadException
 
 #### Examples
 
 ##### Example 1:
 
 ```csharp
-
+    SomeClass obj = new SomeClass();
+    string assemblyName = GetAssemblyName(obj);
+    Console.WriteLine("Assembly Name: " + assemblyName);
 ```
+
+In this example, we retrieve the assembly that contains the SomeClass obj by passing obj as the a parameter to the GetAssemblyName method. The returned assembly name is then assigned to the assemblyName variable.
 
 ##### Example 2:
 
 ```csharp
+try
+{
+    SomeClass obj = new SomeClass();
+    string assemblyName = GetAssemblyName(obj);
+}
+catch (SecurityException ex)
+{
+    // Handle SecurityException
+}
+catch (FileNotFoundException ex)
+{
+    // Handle FileNotFoundException
+}
+catch (FileLoadException ex)
+{
+    // Handle FileLoadException
+}
+catch (BadImageFormatException ex)
+{
+    // Handle BadImageFormatException
+}
+catch (ReflectionTypeLoadException ex)
+{
+    // Handle ReflectionTypeLoadException
+}
+
 
 ```
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+This example demonstrates exception handling with the GetAssemblyName method. The method is called within a try-catch block to catch specific exceptions that may occur during the retrieval of the assembly name. You can handle each exception type separately and implement the necessary error-handling logic for each case.
+
+Note: In the examples, make sure to replace the Console.WriteLine() statements with appropriate error handling or application logic based on your use case.
+
+### GetAssembliesName() Method
+
+#### Description
+
+This method retrieves the names of all assemblies in the current application .
+
+#### Method Signature
+
+```csharp
+public static IEnumerable<string> GetAssembliesName()
+
+```
+
+#### Parameters
+
+None
+
+#### Return Value
+
+An enumerable collection of strings representing the names of assemblies
+
+#### Exceptions
+
+This method may throw the following exceptions:
+
+- SecurityException
+- FileNotFoundException
+- FileLoadException
+- BadImageFormatException
+- ReflectionTypeLoadException
+- TypeLoadException
+- MethodAccessException
+- InvalidOperationException
+
+#### Examples
+
+##### Example 1:
+
+```csharp
+    IEnumerable<string> assemblyNames = GetAssembliesName();
+```
+
+In this example, we call the GetAssembliesName() method, The method retrieves the names
+of all assemblies in the current application
+
+##### Example 2:
+
+```csharp
+try
+{
+    IEnumerable<string> assemblyNames = GetAssembliesName();
+    foreach (string assemblyName in assemblyNames)
+    {
+        Console.WriteLine(assemblyName);
+    }
+}
+catch (SecurityException ex)
+{
+    // Handle SecurityException
+}
+catch (FileNotFoundException ex)
+{
+    // Handle FileNotFoundException
+}
+catch (FileLoadException ex)
+{
+    // Handle FileLoadException
+}
+catch (BadImageFormatException ex)
+{
+    // Handle BadImageFormatException
+}
+catch (ReflectionTypeLoadException)
+{
+    // Handle ReflectionTypeLoadException
+}
+catch (TypeLoadException ex)
+{
+    // Handle TypeLoadException
+}
+catch (MethodAccessException ex)
+{
+    // Handle MethodAccessException
+}
+catch (InvalidOperationException ex)
+{
+    // Handle InvalidOperationException
+}
+
+
+```
+
+This example demonstrates exception handling with the GetAssembliesName method. The method is called within a try-catch block to catch specific exceptions that may occur during the retrieval of the assemblies name. You can handle each exception type separately and implement the necessary error-handling logic for each case.
+
+Note: In the examples, make sure to replace the Console.WriteLine() statements with appropriate error handling or application logic based on your use case.
+
+### GetAssemblyNameLength(string assemblyName) Method
+
+#### Description
+
+This method retrieves the length of the provided assembly name.
+
+#### Method Signature
+
+```csharp
+public static int GetAssemblyNameLength(string assemblyName)
+
+```
+
+#### Parameters
+
+assemblyName: The name of the assembly for which the length is to be calculated
+
+#### Return Value
+
+An integer representing the length of the provided assembly name.
+
+#### Exceptions
+
+None
+
+#### Examples
+
+##### Example 1:
+
+```csharp
+   string assemblyName = "MyAssemblyName";
+    int length = GetAssemblyNameLength(assemblyName);
+    Console.WriteLine("Assembly Name Length: " + length);
+```
 
 ### GetAssemblyNameLength(Type assemblyType) Method
+
+#### Description
+
+This method gets the length of the assembly name associated with the provided assembly type.
 
 #### Method Signature
 
 ```csharp
 public static int GetAssemblyNameLength(Type assemblyType)
+
 ```
 
 #### Parameters
 
+assemblyType: The type whose assembly name's length should be retrieved.
+
 #### Return Value
 
+An integer representing the length of the assembly name associated with the provided assembly type.
+
+#### Remarks
+
+The method will retrieve the assembly name based on the type of the provided assembly type.
+
+See Also
+GetAssemblyName(Type): Another method in this class that retrieves the assembly name based on the provided assembly type.
+
 #### Exceptions
+
+same GetAssemblyName(Type) Exceptions
 
 #### Examples
 
 ##### Example 1:
 
 ```csharp
-
+    Type myType = typeof(MyClass);
+    int length = GetAssemblyNameLength(myType);
+    Console.WriteLine("Assembly Name Length: " + length);
 ```
 
-##### Example 2:
+### GetAssemblyNameLength(object @object) Method
 
-```csharp
+#### Description
 
-```
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-### GetAllAssembly Method
+This method gets the length of the assembly name associated with the provided object's type.
 
 #### Method Signature
 
 ```csharp
-public static List<Assembly> GetAllAssembly()
+public static int GetAssemblyNameLength(object @object)
+
 ```
 
 #### Parameters
 
+object: The object whose type's assembly name's length should be retrieved.
+
 #### Return Value
 
+An integer representing the length of the assembly name associated with the provided object's type.
+
+#### Remarks
+
+- If the provided object is not null, the method will return the assembly name length based on the type of the object.
+- If the provided object is null or no object is provided, the method will retrieve the assembly name length of the currently executing assembly.
+
+See Also
+GetAssemblyName(object): Another method in this class that retrieves the assembly name based on the provided object's type.
+
 #### Exceptions
+
+same GetAssemblyName(object) Exceptions
 
 #### Examples
 
 ##### Example 1:
 
 ```csharp
-
+   SomeClass obj = new SomeClass();
+    int length = GetAssemblyNameLength(obj);
+    Console.WriteLine("Assembly Name Length: " + length);
 ```
 
-##### Example 2:
+### GetAssemblyNameLength(Assembly assembly) Method
 
-```csharp
+#### Description
 
-```
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-### GeTypeByName(Assembly assembly, string typeName) Method
+This method gets the length of the assembly name associated with the provided assembly.
 
 #### Method Signature
 
 ```csharp
-public static IEnumerable<Type> GeTypeByName(Assembly assembly, string typeName)
+public static int GetAssemblyNameLength(Assembly assembly)
+
+
 ```
 
 #### Parameters
 
+assembly: The assembly whose name's length should be retrieved.
+
 #### Return Value
 
+An integer representing the length of the assembly name associated with the provided assembly.
+
+#### Remarks
+
+See Also
+GetAssemblyName(Assembly): Another method in this class that retrieves the assembly name based on the provided assembly.
+
 #### Exceptions
+
+same GetAssemblyName(Assembly) Exceptions
 
 #### Examples
 
 ##### Example 1:
 
 ```csharp
-
+    Assembly myAssembly = Assembly.GetExecutingAssembly();
+    int length = GetAssemblyNameLength(myAssembly);
+    Console.WriteLine("Assembly Name Length: " + length);
 ```
 
-##### Example 2:
+### GetAllAssemblies() Method
 
-```csharp
+#### Description
 
-```
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-### GeTypeByName(string typeName) Method
+This method retrieves all the assemblies loaded in the current application domain or related to projects in the solution.
 
 #### Method Signature
 
 ```csharp
-public static IEnumerable<Type> GeTypeByName(string typeName)
+public static IEnumerable<Assembly> GetAllAssemblies()
+
 ```
 
 #### Parameters
 
+None
+
 #### Return Value
 
+An enumerable collection of assemblies.
+
+##### Remarks
+
+- This method attempts to retrieve assemblies from the current application domain and also from projects in the solution.
+- If the assemblies have already been fetched and cached in the static variable, it will return the cached list.
+- If not, it will attempt to find the solution file, parse its projects in order, and retrieve assemblies from each project.
+
 #### Exceptions
+
+This method may throw the following exceptions:
+
+- Exception
+- FileNotFoundException
+- ReflectionTypeLoadException
+- InvalidOperationException
 
 #### Examples
 
 ##### Example 1:
 
 ```csharp
-
+    IEnumerable<Assembly> assemblies = GetAllAssemblies();
+    foreach (var assembly in assemblies)
+    {
+        Console.WriteLine(assembly.FullName);
+    }
 ```
 
 ##### Example 2:
 
 ```csharp
+try
+{
+    IEnumerable<Assembly> assemblies = GetAllAssemblies();
+    foreach (var assembly in assemblies)
+    {
+        Console.WriteLine(assembly.FullName);
+    }
+}
+catch (FileNotFoundException ex)
+{
+    // Handle FileNotFoundException
+}
+catch (InvalidOperationException ex)
+{
+    // Handle InvalidOperationException
+}
+catch (ReflectionTypeLoadException ex)
+{
+    // Handle ReflectionTypeLoadException
+}
+catch (Exception ex)
+{
+    // Handle any unexpected exceptions that might occur during the process.
+}
+
+
 
 ```
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+This example demonstrates exception handling with the GetAllAssemblies method. The method is called within a try-catch block to catch specific exceptions that may occur during the retrieval of the assemblies name. You can handle each exception type separately and implement the necessary error-handling logic for each case.
 
-### GetTypes Method
+Note: In the examples, make sure to replace the comment with appropriate error handling or application logic based on your use case.
+
+### GetTypesByName(Assembly assembly, string typeName) Method
+
+#### Description
+
+This method gets the types from the provided assembly that have names containing the specified type name.
 
 #### Method Signature
 
 ```csharp
+public static IEnumerable<Type> GetTypesByName(Assembly assembly, string typeName)
+
+```
+
+#### Parameters
+
+assembly: The assembly to search for types. It must not be null.
+typeName: The name to match against the types.
+
+#### Return Value
+
+An enumerable collection of types whose names contain the specified type name.
+
+#### Exceptions
+
+The method may throw the following exception:
+
+- ArgumentNullException
+
+#### Examples
+
+##### Example 1:
+
+```csharp
+try
+{
+    Assembly myAssembly = Assembly.GetExecutingAssembly(); // Get the currently executing assembly.
+    string searchName = "Controller"; // The name to search for in type names.
+
+    IEnumerable<Type> types = GetTypesByName(myAssembly, searchName);
+
+    foreach (Type type in types)
+    {
+        Console.WriteLine(type.FullName);
+    }
+}
+catch (ArgumentNullException ex)
+{
+    // Handle ArgumentNullException
+}
+
+```
+
+### GetTypesByName(string typeName) Method
+
+#### Description
+
+This method gets the types from all loaded assemblies that have names containing the specified type name.
+
+#### Method Signature
+
+```csharp
+
+public static IEnumerable<Type> GetTypesByName(string typeName)
+```
+
+#### Parameters
+
+typeName: The name to match against the types. It must not be null.
+
+#### Return Value
+
+An enumerable collection of types whose names contain the specified type name.
+
+#### Exceptions
+
+The method may throw the following exception:
+
+- ArgumentNullException
+
+#### Examples
+
+##### Example 1:
+
+```csharp
+try
+{
+    string searchName = "Controller"; // The name to search for in type names.
+
+    IEnumerable<Type> types = GetTypesByName(searchName);
+
+    foreach (Type type in types)
+    {
+        Console.WriteLine(type.FullName);
+    }
+}
+catch (ArgumentNullException ex)
+{
+    // Handle ArgumentNullException
+}
+
+
+```
+
+### GetTypes() Method
+
+#### Description
+
+This method gets all types from all assemblies that are currently loaded in the application domain.
+
+#### Method Signature
+
+```csharp
+
 public static IEnumerable<Type> GetTypes()
+
 ```
 
 #### Parameters
 
+None
+
 #### Return Value
 
-#### Exceptions
+An enumerable collection of all types from all assemblies.
 
 #### Examples
 
 ##### Example 1:
 
 ```csharp
+// Code snippet demonstrating how to use GetTypes method.
+try
+{
+    IEnumerable<Type> allTypes = GetTypes();
+
+    foreach (Type type in allTypes)
+    {
+        Console.WriteLine(type.FullName);
+    }
+}
+catch (Exception ex)
+{
+    // Handle any exceptions that might occur during the process.
+}
+
 
 ```
 
-##### Example 2:
+### GetType(string typeName) Method
 
-```csharp
+#### Description
 
-```
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-### GetType Method
+This method gets the first type from all assemblies with the specified type name.
 
 #### Method Signature
 
 ```csharp
+
 public static Type GetType(string typeName)
+
+
 ```
 
 #### Parameters
 
+typeName: The name of the type to retrieve. It must not be null.
+
 #### Return Value
 
+The type with the specified name, or null if not found.
+
 #### Exceptions
+
+The method may throw the following exception:
+
+- ArgumentNullException
 
 #### Examples
 
 ##### Example 1:
 
 ```csharp
+try
+{
+    string typeName = "MyNamespace.MyClass"; // The fully qualified name of the type to retrieve.
 
-```
+    Type type = GetType(typeName);
 
-##### Example 2:
+    if (type != null)
+    {
+        Console.WriteLine("Type Found: " + type.FullName);
+    }
+    else
+    {
+        Console.WriteLine("Type Not Found.");
+    }
+}
+catch (ArgumentNullException ex)
+{
+    // Handle ArgumentNullException
+}
 
-```csharp
-
-```
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-### GetConstructors Method
-
-#### Method Signature
-
-```csharp
-
-```
-
-#### Parameters
-
-#### Return Value
-
-#### Exceptions
-
-#### Examples
-
-##### Example 1:
-
-```csharp
-
-```
-
-##### Example 2:
-
-```csharp
-
-```
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-## Usage
-
-To use the Assembly Helper Utility in your .NET project, make sure to include the following namespaces at the beginning of your code file:
-
-```csharp
-using Microsoft.Build.Construction;
-using System.Reflection;
-```
-
-## Example:
-
-```csharp
-using AssemblyServices;
-using Microsoft.Build.Construction;
-using System.Reflection;
-
-// Retrieve the assembly containing a specific type
-Assembly assembly = AssemblyServices.GetAssembly(typeof(MyType));
-
-// Retrieve all assembly names in the solution
-List<string> assemblyNames = AssemblyServices.GetAssemblyName();
-
-// Get types from all assemblies containing a specific type name
-IEnumerable<Type> types = AssemblyServices.GeTypeByName("MyType");
-
-// Retrieve all types in the solution
-IEnumerable<Type> allTypes = AssemblyServices.GetTypes();
-
-// ...and more
 
 ```
 
